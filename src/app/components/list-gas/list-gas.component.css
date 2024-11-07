@@ -1,0 +1,44 @@
+.filtro {
+    border-radius: 30px;
+    background-color: #FFD166;
+    margin-left: 100px;
+}
+
+.btnBuscar {
+    border-radius: 30px;
+    background-color: #FFD166;
+    text-align: center;
+    width: 230px;
+}
+
+.tamayoInput {
+    border-radius: 30px;
+}
+
+.diseyoInput {
+    border-radius: 30px;
+    background-color: #FFD166;
+}
+
+.bntCP {
+    border-radius: 30px;
+    background-color: #FFD166;
+    margin-left: -50px;
+}
+
+* {
+    font-family: "kufam";
+}
+
+.tamayoLetra {
+    font-size: 20pt;
+}
+
+@font-face {
+    font-family: "kufam";
+    src: url(../../../../public/assets/fonts/Kufam-Regular.ttf);
+}
+
+.tamayoImg {
+    width: 25px;
+}
