@@ -5,59 +5,68 @@
 
         <div class="row mb-4 justify-content-between">
             <div ngbDropdown class="col-12 col-md-3 d-flex">
-                <button type="button" class="btn filtro" style="width: 15rem;" id="dropdownFilter" ngbDropdownToggle>
-                    Filtrar precio
+                <button type="button" class="btn filtro" style="width: 18rem;" id="dropdownCombustiblePrecio" ngbDropdownToggle>
+                    Filtrar por Combustible y Precio
                 </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownFilter">
+                <div ngbDropdownMenu aria-labelledby="dropdownCombustiblePrecio">
                     <form class="px-4 py-3">
                         <div class="mb-3">
-                            <label for="exampleDropdownFormPassword1">Precio mínimo</label>
+                            <label for="tipoCombustible">Tipo de Combustible</label>
+                            <select [(ngModel)]="tipoCombustible" name="tipoCombustible" class="form-control">
+                                <option value>Seleccionar</option>
+                                <option value="Gasolina 95">Gasolina 95</option>
+                                <option value="Gasoleo A">Gasóleo A</option>
+                                <option value="Gasoleo B">Gasóleo B</option>
+                                <option value="Gasolina 98">Gasolina 98</option>
+                                <option value="Hidrogeno">Hidrógeno</option>
+                                <option value="Biodiesel">Biodiesel</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioMinimo">Precio mínimo</label>
                             <input type="number" [(ngModel)]="precioMinimo" name="precioMinimo" class="form-control tamayoInput"
                                 placeholder="Mínimo" />
                         </div>
-
                         <div class="mb-3">
-                            <label for="exampleDropdownFormPassword1">Precio máximo</label>
+                            <label for="precioMaximo">Precio máximo</label>
                             <input type="number" [(ngModel)]="precioMax" name="precioMax" class="form-control tamayoInput"
                                 placeholder="Máximo" />
                         </div>
                     </form>
-
                     <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btnBuscar" ngbDropdownItem
-                            (click)="aplicarFiltroPrecio()">Filtrar</button>
+                        <button type="button" class="btn btnBuscar" (click)="aplicarFiltroPrecio()">Filtrar</button>
                     </div>
                 </div>
             </div>
 
-            <div ngbDropdown class="col-12 col-md-3 d-flex">
-                <button type="button" class="btn filtro" style="width: 15rem;" id="dropdownFilter" ngbDropdownToggle>
-                    Provincias
-                </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownFilter">
-                    <form class="px-4 py-3">
-                        @for (provincia of provincias; track provincias.indexOf(provincia)){
-                        <mat-checkbox
-                            [checked]="provinciasFiltrados.includes(provincia)"
-                            (change)="modificarLista(provincia)">
-                            {{ provincia }}
-                        </mat-checkbox>
+            <div class="d-flex col-3">
+                <mat-form-field>
+                    <mat-label>Comunidades autonomas</mat-label>
+                    <mat-select (selectionChange)="aplicarFiltroComunidades($event.value)">
+                        @for (comunidades of listadoComunidades; track $index){
+                        <mat-option value={{comunidades.IDCCAA}}>{{comunidades.CCAA}}</mat-option>
                         }
-                    </form>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btnBuscar" (click)="filtrarProvinciaMultiple()">Filtrar</button>
-                    </div>
-                </div>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
-            <div class="col-12 col-md-3 d-flex">
-                <form class="form-inline d-flex diseyoInput">
-                    <input class="form-control mr-sm-2 diseyoInput " type="search" placeholder="Código Postal" name="codigoPostal"
-                        [(ngModel)]="codigoPostal" aria-label="search">
-                    <button class="btn" type="submit" (click)="aplicarCodigoPostal()">
-                        Buscar
-                    </button>
-                </form>
+            <div class="col-12 col-md-3 d-flex  tamayoInput">
+                <mat-form-field class="example-full-width">
+                    <input type="text"
+                        placeholder="Código postal"
+                        aria-label="Number"
+                        matInput
+                        [formControl]="myControl"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        @for (option of filteredOptions | async; track option) {
+                        <mat-option [value]="option">{{option}}</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                <button type="button" class="btn btnBuscar" (click)="aplicarCodigoPostal()">
+                    Buscar
+                </button>
             </div>
 
         </div>

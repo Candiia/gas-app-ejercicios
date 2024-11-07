@@ -9,9 +9,13 @@ import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderComponent } from './shared/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { PageNotFoundComponentComponent } from './shared/page-not-found-component/page-not-found-component.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AsyncPipe } from '@angular/common';
 
 
 @NgModule({
@@ -30,7 +34,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatIconModule,
     FormsModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    AsyncPipe
   ],
   providers: [
     provideAnimationsAsync(),

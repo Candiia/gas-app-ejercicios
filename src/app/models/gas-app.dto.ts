@@ -16,7 +16,10 @@ export class Gasolinera {
     public priceBiodiesel: string,
     public priceGasolina98: string,
     public priceHidrogeno: string,
-    public priceGasoleoB: string
+    public priceGasoleoB: string,
+    public iDMunicipio: number,
+    public iDProvincia: number,
+    public iDCCAA: number,
   ) { }
 }
 
