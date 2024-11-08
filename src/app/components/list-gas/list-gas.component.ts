@@ -19,15 +19,13 @@ export class ListGasComponent implements OnInit {
   filteredOptions: Observable<string[]> | undefined;
   listadoComunidades: ComunidadesAutonomas[] = [];
   listPronvicias: Provincias[] = [];
-  codigoPostal = 0;
+  codigoPostal = '';
   listaPostalCode: CodeList[] = [];
   listadoGasolineras: Gasolinera[] = [];
   listadoGasolinerasOriginal: Gasolinera[] = [];
   @Input() precioMinimo = 0;
   @Input() precioMax = 0;
   tipoCombustible: string = '';
-  comunidadSeleccionada = 0;
-  provinciaSeleccionada = 0;
   comunidadMarcada = true;
   constructor(private gasService: GasAppService, private postalService: CodePostalService) { }
 
@@ -136,13 +134,9 @@ export class ListGasComponent implements OnInit {
       this.listadoGasolineras = this.cleanProperties(listGasol);
       this.listadoGasolinerasOriginal = this.listadoGasolineras;
     })
-    if(iDDCCA == 'all'){
-      this.comunidadMarcada = false;
-      this.listadoGasolineras = this.listadoGasolinerasOriginal;
-    }else{
-      this.comunidadMarcada = true;
-      this.buscarProvinciaComunidad(iDDCCA);
-    }
+ 
+    this.buscarProvinciaComunidad(iDDCCA);
+
   }
 
   buscarProvinciaComunidad(iDCCAA: string){
@@ -160,6 +154,7 @@ export class ListGasComponent implements OnInit {
       this.listadoGasolinerasOriginal = this.listadoGasolineras;
     })
   }
+
   filter(value: string): string[] {
     return this.listaPostalCode
       .map((codeList) => codeList.codigo_postal.toString())
@@ -168,13 +163,15 @@ export class ListGasComponent implements OnInit {
 
 
   filterPostalCode() {
-    if (this.codigoPostal != 0) {
+    if (this.codigoPostal == '') {
       this.listadoGasolineras = this.listadoGasolinerasOriginal;
     } else {
       this.listadoGasolineras = this.listadoGasolinerasOriginal.filter(gasolinera =>
-        gasolinera.postalCode === this.codigoPostal.toString()
+        gasolinera.postalCode === this.codigoPostal
       );
     }
   }
 }
+
+
 
