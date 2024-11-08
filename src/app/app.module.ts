@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AsyncPipe } from '@angular/common';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,7 @@ import { AsyncPipe } from '@angular/common';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    AsyncPipe
+    AsyncPipe,
   ],
   providers: [
     provideAnimationsAsync(),

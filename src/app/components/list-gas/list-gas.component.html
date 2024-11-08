@@ -4,7 +4,8 @@
         <h1 class="text-center">Gasolineras</h1>
 
         <div class="row mb-4 justify-content-between">
-            <div ngbDropdown class="col-12 col-md-3 d-flex">
+            <div class="col-12 d-flex justify-content-between">
+            <div ngbDropdown class="d-flex">
                 <button type="button" class="btn filtro" style="width: 18rem;" id="dropdownCombustiblePrecio" ngbDropdownToggle>
                     Filtrar por Combustible y Precio
                 </button>
@@ -39,42 +40,51 @@
                 </div>
             </div>
 
-            <div class="d-flex col-3">
+            <div class="d-flex">
                 <mat-form-field>
-                    <mat-label>Comunidades autonomas</mat-label>
+                    <mat-label>Comunidades autonomas</mat-label> 
                     <mat-select (selectionChange)="aplicarFiltroComunidades($event.value)">
-                        @for (comunidades of listadoComunidades; track $index){
+                        <mat-option>Todas</mat-option>
+                        @for (comunidades of listadoComunidades; track comunidades.IDCCAA){
                         <mat-option value={{comunidades.IDCCAA}}>{{comunidades.CCAA}}</mat-option>
+                       
                         }
-                    </mat-select>
-                </mat-form-field>
+                    </mat-select> 
+                </mat-form-field>  
+                @if(comunidadMarcada){
+                    <mat-form-field class="ms-5">
+                        <mat-label>Provincias</mat-label>
+                        <mat-select (selectionChange)="aplicarFiltroProvincias($event.value)">
+                            @for (provincias of listPronvicias; track provincias.IDPovincia){
+                            <mat-option value={{provincias.IDPovincia}}>{{provincias.Provincia}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+        
+                } 
             </div>
-
-            <div class="col-12 col-md-3 d-flex  tamayoInput">
-                <mat-form-field class="example-full-width">
+            <div>
+                <mat-form-field class="example-full-width btnBuscar">
                     <input type="text"
                         placeholder="Código postal"
                         aria-label="Number"
                         matInput
                         [formControl]="myControl"
-                        [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                        @for (option of filteredOptions | async; track option) {
-                        <mat-option [value]="option">{{option}}</mat-option>
+                        [matAutocomplete]="auto"    >
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterPostalCode()">
+                        @for (option of filteredOptions | async; track $index) {
+                        <mat-option [value]=option>{{option}}</mat-option>
                         }
                     </mat-autocomplete>
                 </mat-form-field>
-                <button type="button" class="btn btnBuscar" (click)="aplicarCodigoPostal()">
-                    Buscar
-                </button>
             </div>
-
+        </div>
         </div>
     </div>
     <div class="container-fluid">
         <div class="row justify-content-center">
             @for (gasolinera of listadoGasolineras; track gasolinera.id) {
-            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
+            <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-center">
 
                 <div class="card mb-5" style="width: 25rem;">
                     <div class="card-body">

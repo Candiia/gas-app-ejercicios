@@ -6,6 +6,7 @@ import { CodePostalService } from '../../services/postal-code.service';
 import { map, Observable, startWith } from 'rxjs';
 import { CodeList } from '../../models/code-postal.interface';
 import { ComunidadesAutonomas } from '../../models/comunidades-autonomas.interfaces';
+import { Provincias } from '../../models/provincias.interfaces';
 
 @Component({
   selector: 'app-list-gas',
@@ -13,10 +14,12 @@ import { ComunidadesAutonomas } from '../../models/comunidades-autonomas.interfa
   styleUrl: './list-gas.component.css'
 })
 export class ListGasComponent implements OnInit {
+
   myControl = new FormControl('');
   filteredOptions: Observable<string[]> | undefined;
   listadoComunidades: ComunidadesAutonomas[] = [];
-  codigoPostal = '';
+  listPronvicias: Provincias[] = [];
+  codigoPostal = 0;
   listaPostalCode: CodeList[] = [];
   listadoGasolineras: Gasolinera[] = [];
   listadoGasolinerasOriginal: Gasolinera[] = [];
@@ -24,6 +27,8 @@ export class ListGasComponent implements OnInit {
   @Input() precioMax = 0;
   tipoCombustible: string = '';
   comunidadSeleccionada = 0;
+  provinciaSeleccionada = 0;
+  comunidadMarcada = true;
   constructor(private gasService: GasAppService, private postalService: CodePostalService) { }
 
   ngOnInit() {
@@ -123,7 +128,7 @@ export class ListGasComponent implements OnInit {
   }
 
   aplicarFiltroComunidades(iDDCCA: string) {
-    this.gasService.getGasListPorUnComun(iDDCCA).subscribe((response) => {
+    this.gasService.getListPorUnComun(iDDCCA).subscribe((response) => {
       const respuesString = JSON.stringify(response);
       let paser;
       paser = JSON.parse(respuesString);
@@ -131,25 +136,45 @@ export class ListGasComponent implements OnInit {
       this.listadoGasolineras = this.cleanProperties(listGasol);
       this.listadoGasolinerasOriginal = this.listadoGasolineras;
     })
-
-  }
-
-  aplicarCodigoPostal() {
-    if (this.codigoPostal == '') {
+    if(iDDCCA == 'all'){
+      this.comunidadMarcada = false;
       this.listadoGasolineras = this.listadoGasolinerasOriginal;
-    } else {
-      this.listadoGasolineras = this.listadoGasolinerasOriginal.filter(gasolinera =>
-        gasolinera.postalCode === this.codigoPostal
-      );
+    }else{
+      this.comunidadMarcada = true;
+      this.buscarProvinciaComunidad(iDDCCA);
     }
   }
 
-
+  buscarProvinciaComunidad(iDCCAA: string){
+    this.gasService.getProvinciasList(iDCCAA).subscribe((response) => {
+      this.listPronvicias = response;
+    })
+  }
+  aplicarFiltroProvincias(idProvincias: string) {
+    this.gasService.getPorUnaProvincia(idProvincias).subscribe((response) => {
+      const respuesString = JSON.stringify(response);
+      let paser;
+      paser = JSON.parse(respuesString);
+      let listGasol = paser['ListaEESSPrecio'];
+      this.listadoGasolineras = this.cleanProperties(listGasol);
+      this.listadoGasolinerasOriginal = this.listadoGasolineras;
+    })
+  }
   filter(value: string): string[] {
     return this.listaPostalCode
       .map((codeList) => codeList.codigo_postal.toString())
       .filter((codigoPostal) => codigoPostal.includes(value));
   }
 
+
+  filterPostalCode() {
+    if (this.codigoPostal != 0) {
+      this.listadoGasolineras = this.listadoGasolinerasOriginal;
+    } else {
+      this.listadoGasolineras = this.listadoGasolinerasOriginal.filter(gasolinera =>
+        gasolinera.postalCode === this.codigoPostal.toString()
+      );
+    }
+  }
 }
 
